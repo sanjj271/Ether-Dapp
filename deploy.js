@@ -1,23 +1,25 @@
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-const Web3 = require("web3");
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const Web3 = require('web3');
+
 const { abi, evm } = require('./compile');
 
+provider = new HDWalletProvider(
+  'cousin axis rubber cushion expose mix denial claim dilemma plastic oyster mind',
+  'https://rinkeby.infura.io/v3/baa7ff9dc3894d3cbdab7fdf8801015e'
+);
 
-const provider = new HDWalletProvider(
-    'cousin axis rubber cushion expose mix denial claim dilemma plastic oyster mind', 
-    'https://rinkeby.infura.io/v3/baa7ff9dc3894d3cbdab7fdf8801015e'
-)
 const web3 = new Web3(provider);
 
 const deploy = async () => {
-    const accounts = await web3.eth.getAccounts()
-    console.log('Attempting to deploy from', accounts[0])
+  const accounts = await web3.eth.getAccounts();
 
-    const result = await new web3.eth.Contract(abi)
-    .deploy({data: evm.bytecode.object, arguments : ['Hi there']})
-    .send({gas: '1000000', from: accounts[0]});
+  console.log('Attempting to deploy from account', accounts[0]);
 
-    console.log('Contract deployed to', result.options.address);
-    provider.engine.stop();
-}
-deploy()
+  const result = await new web3.eth.Contract(abi)
+    .deploy({ data: evm.bytecode.object, arguments: ['Hi there!'] })
+    .send({ gas: '1000000', from: accounts[0] });
+
+  console.log('Contract deployed to', result.options.address);
+  provider.engine.stop();
+};
+deploy();
